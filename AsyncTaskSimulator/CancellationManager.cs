@@ -9,12 +9,8 @@ namespace AsyncTaskSimulator
     internal static class CancellationManager
     {
         public static CancellationTokenSource CancellTokenSource { get; private set; }     // This object points which CancelToken should stops the Task
-        public static CancellationToken CancellToken { get; private set; }                 // Cancellation Token                 
-        public static bool AreTasksRunning 
-        { 
-            get { return AreTasksRunning; }
-            set { AreTasksRunning = value; } 
-        }
+        public static CancellationToken CancellToken { get; private set; }                 // Cancellation Token                                 
+        public static bool AreTasksRunning { get; set; }
 
         static CancellationManager()
         {
