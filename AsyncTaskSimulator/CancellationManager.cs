@@ -19,7 +19,7 @@ namespace AsyncTaskSimulator
             AreTasksRunning = false;
         }
 
-        public static async void MonitoringLoop()
+        public static async Task MonitoringLoop()
         {
             AreTasksRunning = true;
 
