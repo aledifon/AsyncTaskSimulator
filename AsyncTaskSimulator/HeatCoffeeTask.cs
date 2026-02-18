@@ -10,14 +10,20 @@ namespace AsyncTaskSimulator
     {        
         public static async Task<string> HeatCoffeeAsync(int duration)
         {
-            Console.WriteLine("Boiling water started...");
+            Console.WriteLine("Heating coffee started...");
+            Console.WriteLine("Waiting for coffee to be hot...");
 
-            Console.WriteLine("Waiting for water to be hot...");
-            await Task.Delay(duration, CancellationManager.CancellToken);
-            Console.WriteLine("Boling water complete...");
-
-            return "hot water";
+            try
+            {
+                await Task.Delay(duration, CancellationManager.CancellToken);
+                Console.WriteLine("Heating Coffee complete...");
+                return "hot coffee";
+            }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine("Heating coffee canceled!");
+                return null;
+            }
         }
-
     }
 }

@@ -8,22 +8,27 @@ namespace AsyncTaskSimulator
 {
     internal static class CancellationManager
     {
-        public static CancellationTokenSource CancellTokenSource { get; private set; }     // This object points which CancelToken should stops the Task
+        public static CancellationTokenSource? CancellTokenSource { get; private set; }     // This object points which CancelToken should stops the Task
         public static CancellationToken CancellToken { get; private set; }                 // Cancellation Token                                 
-        public static bool AreTasksRunning { get; set; }
+        public static bool CancelMonitoringEnabled { get; set; }
 
         static CancellationManager()
         {
-            CancellTokenSource = new CancellationTokenSource();
-            CancellToken = CancellTokenSource.Token;
-            AreTasksRunning = false;
+            ResetCancellationToken();
+            CancelMonitoringEnabled = false;
         }
 
-        public static async Task MonitoringLoop()
+        public static void ResetCancellationToken()
         {
-            AreTasksRunning = true;
+            CancellTokenSource = new CancellationTokenSource();
+            CancellToken = CancellTokenSource.Token;
+        }
 
-            while (!CancellToken.IsCancellationRequested && AreTasksRunning)
+        public static async Task MonitoringLoopAsync()
+        {
+            CancelMonitoringEnabled = true;
+
+            while (!CancellToken.IsCancellationRequested && CancelMonitoringEnabled)
             {
                 if (Console.KeyAvailable)
                 {
@@ -31,7 +36,7 @@ namespace AsyncTaskSimulator
                     if (key == ConsoleKey.X)
                     {
                         // Cancel Task
-                        CancellTokenSource.Cancel();
+                        CancellTokenSource?.Cancel();
                         break;
                     }
                 }                
